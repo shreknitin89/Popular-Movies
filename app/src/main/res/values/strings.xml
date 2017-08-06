@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Popular Movies</string>
+    <string name="action_popular">Popular Movies</string>
+    <string name="action_top_rated">Top Rated Movies</string>
+    <string name="movie_poster">movie poster</string>
+    <string name="details_activity_title">Movie Details</string>
+</resources>
