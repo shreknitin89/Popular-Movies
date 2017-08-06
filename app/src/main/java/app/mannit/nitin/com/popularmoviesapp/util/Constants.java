@@ -16,5 +16,4 @@ public class Constants {
     public static final String LIST = "LIST";
     public static final String MOVIE_DATA = "MOVIE_DATA";
     public static final String IMAGE_URL = "http://image.tmdb.org/t/p/original/";
-
 }
