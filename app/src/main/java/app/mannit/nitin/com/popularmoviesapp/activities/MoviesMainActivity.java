@@ -15,10 +15,14 @@ import android.widget.Toast;
 
 import org.parceler.Parcels;
 
+import java.util.ArrayList;
+
 import app.mannit.nitin.com.popularmoviesapp.R;
 import app.mannit.nitin.com.popularmoviesapp.adapters.MainMovieAdapter;
 import app.mannit.nitin.com.popularmoviesapp.models.MovieList;
+import app.mannit.nitin.com.popularmoviesapp.models.Result;
 import app.mannit.nitin.com.popularmoviesapp.util.Constants;
+import app.mannit.nitin.com.popularmoviesapp.util.EndlessRecyclerViewScrollListener;
 import app.mannit.nitin.com.popularmoviesapp.util.NetworkUtil;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -37,9 +41,12 @@ public class MoviesMainActivity extends PopularMoviesActivity {
     @BindView(R.id.movie_list)
     RecyclerView recyclerView;
 
-    private LinearLayoutManager mLayoutManager;
+    private GridLayoutManager mLayoutManager;
     private MainMovieAdapter mMovieAdapter;
-    private MovieList mList;
+    private ArrayList<Result> mList = new ArrayList<>();
+    private EndlessRecyclerViewScrollListener mScrollListener;
+    private String mPath;
+    private int mPage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,7 +54,22 @@ public class MoviesMainActivity extends PopularMoviesActivity {
         setContentView(R.layout.activity_movies_main);
         mUnBinder = ButterKnife.bind(this);
         setSupportActionBar(toolbar);
+        mMovieAdapter = new MainMovieAdapter(this);
         mLayoutManager = new GridLayoutManager(this, 2);
+        mScrollListener = new EndlessRecyclerViewScrollListener(mLayoutManager) {
+            @Override
+            public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
+                loadNextDataFromApi();
+            }
+        };
+        recyclerView.setAdapter(mMovieAdapter);
+        recyclerView.addOnScrollListener(mScrollListener);
+    }
+
+    private void loadNextDataFromApi() {
+        if (mPath != null && mPage != 0) {
+            establishConnectionAndMakeCall(mPath, mPage);
+        }
     }
 
     @Override
@@ -55,15 +77,20 @@ public class MoviesMainActivity extends PopularMoviesActivity {
         super.onPostCreate(savedInstanceState);
         mLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(mLayoutManager);
-        recyclerView.setItemViewCacheSize(20);
+        recyclerView.setItemViewCacheSize(100);
     }
 
-    private void establishConnectionAndMakeCall(String path) {
+    private void establishConnectionAndMakeCall(String path, int page) {
 
         switch (path) {
             case Constants.POPULAR_PATH:
                 if (NetworkUtil.isOnline(this)) {
-                    Call<MovieList> response = NetworkUtil.getPopularMovieList();
+                    Call<MovieList> response = NetworkUtil.getPopularMovieList(page);
+
+                    if (page == 1) {
+                        mMovieAdapter.clear();
+                        mList.clear();
+                    }
 
                     if (response != null) {
                         getMoviesList(response);
@@ -74,7 +101,12 @@ public class MoviesMainActivity extends PopularMoviesActivity {
                 break;
             case Constants.TOP_RATED_PATH:
                 if (NetworkUtil.isOnline(this)) {
-                    Call<MovieList> response = NetworkUtil.getTopRatedMovieList();
+                    Call<MovieList> response = NetworkUtil.getTopRatedMovieList(page);
+
+                    if (page == 1) {
+                        mMovieAdapter.clear();
+                        mList.clear();
+                    }
 
                     if (response != null) {
                         getMoviesList(response);
@@ -90,12 +122,13 @@ public class MoviesMainActivity extends PopularMoviesActivity {
         response.enqueue(new Callback<MovieList>() {
             @Override
             public void onResponse(@NonNull Call<MovieList> call, @NonNull Response<MovieList> response) {
-                mList = response.body();
-                if (mList != null)
-                    mMovieAdapter = new MainMovieAdapter(mList.getResults(), MoviesMainActivity.this);
+                MovieList list = response.body();
 
-                recyclerView.setAdapter(mMovieAdapter);
-
+                if (list != null) {
+                    mList.addAll(list.getResults());
+                    mMovieAdapter.addList(list.getResults());
+                    mPage = list.getPage() + 1 < list.getTotalPages() ? list.getPage() + 1 : 0;
+                }
             }
 
             @Override
@@ -125,12 +158,13 @@ public class MoviesMainActivity extends PopularMoviesActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        if (mListState != null && mList != null) {
+        if (mListState != null && mList.size() > 0) {
             mLayoutManager.onRestoreInstanceState(mListState);
-            mMovieAdapter = new MainMovieAdapter(mList.getResults(), MoviesMainActivity.this);
+            mMovieAdapter.addList(mList);
             recyclerView.setAdapter(mMovieAdapter);
         } else {
-            establishConnectionAndMakeCall(Constants.POPULAR_PATH);
+            mPath = Constants.POPULAR_PATH;
+            establishConnectionAndMakeCall(mPath, 1);
         }
     }
 
@@ -150,10 +184,12 @@ public class MoviesMainActivity extends PopularMoviesActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_top_rated) {
-            establishConnectionAndMakeCall(Constants.TOP_RATED_PATH);
+            mPath = Constants.TOP_RATED_PATH;
+            establishConnectionAndMakeCall(mPath, 1);
             return true;
         } else if (id == R.id.action_popular) {
-            establishConnectionAndMakeCall(Constants.POPULAR_PATH);
+            mPath = Constants.POPULAR_PATH;
+            establishConnectionAndMakeCall(mPath, 1);
             return true;
         }
         return super.onOptionsItemSelected(item);

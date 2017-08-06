@@ -36,6 +36,10 @@ public class MainMovieAdapter extends RecyclerView.Adapter<MainMovieAdapter.Post
         mContext = context;
     }
 
+    public MainMovieAdapter(Context context) {
+        mContext = context;
+    }
+
     @Override
     public PosterViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.poster_card, parent, false);
@@ -50,7 +54,18 @@ public class MainMovieAdapter extends RecyclerView.Adapter<MainMovieAdapter.Post
 
     @Override
     public int getItemCount() {
-        return mMoviesList.size();
+        return mMoviesList.size() > 0 ? mMoviesList.size() : 0;
+    }
+
+    public void addList(ArrayList<Result> moviesList) {
+        mMoviesList.addAll(moviesList);
+        notifyDataSetChanged();
+    }
+
+    public void clear() {
+        int size = this.mMoviesList.size();
+        this.mMoviesList.clear();
+        notifyItemRangeRemoved(0, size);
     }
 
     class PosterViewHolder extends RecyclerView.ViewHolder {

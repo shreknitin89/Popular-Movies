@@ -19,12 +19,12 @@ import static app.mannit.nitin.com.popularmoviesapp.util.Constants.TOP_RATED_PAT
 
 public class NetworkUtil {
 
-    public static Call<MovieList> getPopularMovieList() {
-        return ServiceGenerator.createService(ApiBuilder.class, BASE_URL).getMoviesList(POPULAR_PATH);
+    public static Call<MovieList> getPopularMovieList(int page) {
+        return ServiceGenerator.createService(ApiBuilder.class, BASE_URL).getMoviesList(POPULAR_PATH, page != 0 ? page : 1);
     }
 
-    public static Call<MovieList> getTopRatedMovieList() {
-        return ServiceGenerator.createService(ApiBuilder.class, BASE_URL).getMoviesList(TOP_RATED_PATH);
+    public static Call<MovieList> getTopRatedMovieList(int page) {
+        return ServiceGenerator.createService(ApiBuilder.class, BASE_URL).getMoviesList(TOP_RATED_PATH, page != 0 ? page : 1);
     }
 
     public static boolean isOnline(Context context) {

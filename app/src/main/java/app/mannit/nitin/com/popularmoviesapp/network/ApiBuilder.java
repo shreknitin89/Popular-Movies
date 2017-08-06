@@ -5,6 +5,7 @@ import app.mannit.nitin.com.popularmoviesapp.util.Constants;
 import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
 
 /**
  * Created by nitingeetasagardasari on 8/4/17 for the project PopularMoviesApp.
@@ -13,5 +14,5 @@ import retrofit2.http.Path;
 public interface ApiBuilder {
 
     @GET("/3/movie/{type}?api_key=" + Constants.API_KEY)
-    Call<MovieList> getMoviesList(@Path("type") String path);
+    Call<MovieList> getMoviesList(@Path("type") String path, @Query("page") int page);
 }
