@@ -1,4 +1,3 @@
 <resources>
-    <dimen name="layout_margin">16dp</dimen>
     <dimen name="list_margin">8dp</dimen>
 </resources>

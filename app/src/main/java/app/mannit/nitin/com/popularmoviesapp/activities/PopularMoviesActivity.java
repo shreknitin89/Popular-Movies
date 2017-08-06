@@ -11,7 +11,7 @@ import butterknife.Unbinder;
  */
 
 public class PopularMoviesActivity extends AppCompatActivity {
-    private static final String TAG = "PopularMoviesActivity";
+
     protected Unbinder mUnBinder;
 
     @Override

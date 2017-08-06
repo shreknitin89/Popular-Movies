@@ -2,6 +2,7 @@ package app.mannit.nitin.com.popularmoviesapp.activities;
 
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -88,7 +89,7 @@ public class MoviesMainActivity extends PopularMoviesActivity {
     private void getMoviesList(Call<MovieList> response) {
         response.enqueue(new Callback<MovieList>() {
             @Override
-            public void onResponse(Call<MovieList> call, Response<MovieList> response) {
+            public void onResponse(@NonNull Call<MovieList> call, @NonNull Response<MovieList> response) {
                 mList = response.body();
                 if (mList != null)
                     mMovieAdapter = new MainMovieAdapter(mList.getResults(), MoviesMainActivity.this);
@@ -98,7 +99,7 @@ public class MoviesMainActivity extends PopularMoviesActivity {
             }
 
             @Override
-            public void onFailure(Call<MovieList> call, Throwable t) {
+            public void onFailure(@NonNull Call<MovieList> call, @NonNull Throwable t) {
                 Log.e(TAG, "onFailure: " + t.getMessage(), t);
             }
         });

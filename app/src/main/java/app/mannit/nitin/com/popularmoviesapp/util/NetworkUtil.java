@@ -9,7 +9,6 @@ import app.mannit.nitin.com.popularmoviesapp.network.ApiBuilder;
 import app.mannit.nitin.com.popularmoviesapp.network.ServiceGenerator;
 import retrofit2.Call;
 
-import static app.mannit.nitin.com.popularmoviesapp.util.Constants.API_KEY;
 import static app.mannit.nitin.com.popularmoviesapp.util.Constants.BASE_URL;
 import static app.mannit.nitin.com.popularmoviesapp.util.Constants.POPULAR_PATH;
 import static app.mannit.nitin.com.popularmoviesapp.util.Constants.TOP_RATED_PATH;
@@ -21,11 +20,11 @@ import static app.mannit.nitin.com.popularmoviesapp.util.Constants.TOP_RATED_PAT
 public class NetworkUtil {
 
     public static Call<MovieList> getPopularMovieList() {
-        return ServiceGenerator.createService(ApiBuilder.class, BASE_URL).getMoviesList(POPULAR_PATH, API_KEY);
+        return ServiceGenerator.createService(ApiBuilder.class, BASE_URL).getMoviesList(POPULAR_PATH);
     }
 
     public static Call<MovieList> getTopRatedMovieList() {
-        return ServiceGenerator.createService(ApiBuilder.class, BASE_URL).getMoviesList(TOP_RATED_PATH, API_KEY);
+        return ServiceGenerator.createService(ApiBuilder.class, BASE_URL).getMoviesList(TOP_RATED_PATH);
     }
 
     public static boolean isOnline(Context context) {
