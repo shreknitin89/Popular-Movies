@@ -4,4 +4,8 @@
     <string name="action_top_rated">Top Rated Movies</string>
     <string name="movie_poster">movie poster</string>
     <string name="details_activity_title">Movie Details</string>
+    <string name="favorite_button_text">Mark As \nFavorite</string>
+    <string name="trailer_heading">Trailer %d</string>
+    <string name="trailers">Trailers:</string>
+    <string name="reviews">Reviews:</string>
 </resources>

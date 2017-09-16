@@ -35,9 +35,9 @@ dependencies {
     compile 'com.android.support:multidex:1.0.1'
 
     // Okhttp and okio for
-    compile 'com.squareup.okhttp3:okhttp:3.8.1'
-    compile 'com.squareup.okhttp3:logging-interceptor:3.8.1'
-    compile 'com.squareup.okio:okio:1.7.0'
+    compile 'com.squareup.okhttp3:okhttp:3.9.0'
+    compile 'com.squareup.okhttp3:logging-interceptor:3.9.0'
+    compile 'com.squareup.okio:okio:1.13.0'
 
     // Butterknife for easy bindings
     compile 'com.jakewharton:butterknife:8.8.0'

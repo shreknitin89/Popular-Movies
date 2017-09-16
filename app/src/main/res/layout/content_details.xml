@@ -31,7 +31,8 @@
         android:layout_marginTop="8dp"
         android:contentDescription="@string/movie_poster"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/movie_title"/>
+        app:layout_constraintTop_toBottomOf="@+id/movie_title"
+        tools:src="@drawable/poster"/>
 
     <TextView
         android:id="@+id/release"
@@ -97,5 +98,41 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/poster_thumbnail"
         tools:text="description"/>
+
+    <Button
+        android:id="@+id/favourite_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:background="@color/titleBackground"
+        android:drawableLeft="@android:drawable/btn_star"
+        android:drawableStart="@android:drawable/btn_star"
+        android:text="@string/favorite_button_text"
+        app:layout_constraintBottom_toTopOf="@+id/description"
+        app:layout_constraintHorizontal_bias="0.444"
+        app:layout_constraintLeft_toRightOf="@+id/poster_thumbnail"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/rating"
+        app:layout_constraintVertical_bias="0.161"/>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/trailers_reviews"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/description"/>
 
 </android.support.constraint.ConstraintLayout>

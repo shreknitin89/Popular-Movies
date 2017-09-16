@@ -5,6 +5,8 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
 import app.mannit.nitin.com.popularmoviesapp.models.MovieList;
+import app.mannit.nitin.com.popularmoviesapp.models.Reviews;
+import app.mannit.nitin.com.popularmoviesapp.models.Trailers;
 import app.mannit.nitin.com.popularmoviesapp.network.ApiBuilder;
 import app.mannit.nitin.com.popularmoviesapp.network.ServiceGenerator;
 import retrofit2.Call;
@@ -25,6 +27,14 @@ public class NetworkUtil {
 
     public static Call<MovieList> getTopRatedMovieList(int page) {
         return ServiceGenerator.createService(ApiBuilder.class, BASE_URL).getMoviesList(TOP_RATED_PATH, page != 0 ? page : 1);
+    }
+
+    public static Call<Trailers> getTrailers(String id) {
+        return ServiceGenerator.createService(ApiBuilder.class, BASE_URL).getVideos(id);
+    }
+
+    public static Call<Reviews> getReviews(String id) {
+        return ServiceGenerator.createService(ApiBuilder.class, BASE_URL).getreviews(id);
     }
 
     public static boolean isOnline(Context context) {

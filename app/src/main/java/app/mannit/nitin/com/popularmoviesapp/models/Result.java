@@ -10,7 +10,7 @@ public class Result {
 
     @SerializedName("id")
     @Expose
-    long id;
+    String id;
     @SerializedName("video")
     @Expose
     boolean video;
@@ -32,8 +32,17 @@ public class Result {
     @SerializedName("release_date")
     @Expose
     String releaseDate;
+    @SerializedName("author")
+    @Expose
+    public String author;
+    @SerializedName("content")
+    @Expose
+    public String content;
+    @SerializedName("url")
+    @Expose
+    public String url;
 
-    public long getId() {
+    public String getId() {
         return id;
     }
 
@@ -63,5 +72,17 @@ public class Result {
 
     public String getReleaseDate() {
         return releaseDate;
+    }
+
+    public String getAuthor() {
+        return author;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public String getUrl() {
+        return url;
     }
 }
