@@ -26,9 +26,9 @@ import butterknife.OnClick;
 
 public class CustomAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    public static final int TRAILER = 1;
-    public static final int REVIEW = 2;
-    public static final int HEADER = 3;
+    private static final int TRAILER = 1;
+    private static final int REVIEW = 2;
+    private static final int HEADER = 3;
 
     private Context mContext;
     private ArrayList<Result> mTrailers;
@@ -98,7 +98,7 @@ public class CustomAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         @BindView(R.id.title)
         TextView headline;
 
-        public HeaderViewHolder(View itemView) {
+        HeaderViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
         }
@@ -111,16 +111,16 @@ public class CustomAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         @BindView(R.id.play_button)
         ImageView playButton;
 
-        public TrailerViewHolder(View itemView) {
+        TrailerViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
         }
 
         @OnClick(R.id.trailer_container)
         void openTrailer() {
-            String id = mTrailers.get(getAdapterPosition() - 1).getId();
-            Intent appIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("vnd.youtube:" + id));
-            Intent webIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.youtube.com/watch?v=" + id));
+            String key = mTrailers.get(getAdapterPosition() - 1).getKey();
+            Intent appIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("vnd.youtube:" + key));
+            Intent webIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.youtube.com/watch?v=" + key));
             try {
                 mContext.startActivity(appIntent);
             } catch (ActivityNotFoundException ex) {
@@ -134,7 +134,7 @@ public class CustomAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         @BindView(android.R.id.text1)
         TextView review;
 
-        public ReviewViewHolder(View itemView) {
+        ReviewViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
         }

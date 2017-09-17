@@ -11,9 +11,6 @@ public class Result {
     @SerializedName("id")
     @Expose
     String id;
-    @SerializedName("video")
-    @Expose
-    boolean video;
     @SerializedName("vote_average")
     @Expose
     double voteAverage;
@@ -32,22 +29,15 @@ public class Result {
     @SerializedName("release_date")
     @Expose
     String releaseDate;
-    @SerializedName("author")
-    @Expose
-    public String author;
     @SerializedName("content")
     @Expose
-    public String content;
-    @SerializedName("url")
+    String content;
+    @SerializedName("key")
     @Expose
-    public String url;
+    String key;
 
     public String getId() {
         return id;
-    }
-
-    public boolean hasVideo() {
-        return video;
     }
 
     public double getVoteAverage() {
@@ -74,15 +64,11 @@ public class Result {
         return releaseDate;
     }
 
-    public String getAuthor() {
-        return author;
-    }
-
     public String getContent() {
         return content;
     }
 
-    public String getUrl() {
-        return url;
+    public String getKey() {
+        return key;
     }
 }
