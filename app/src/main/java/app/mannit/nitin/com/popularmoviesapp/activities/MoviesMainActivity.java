@@ -159,6 +159,7 @@ public class MoviesMainActivity extends PopularMoviesActivity implements LoaderM
         if (savedInstanceState != null) {
             mListState = savedInstanceState.getParcelable(Constants.LAYOUT_MANAGER_STATE);
             mList = Parcels.unwrap(savedInstanceState.getParcelable(Constants.LIST));
+            mMovieAdapter.addList(mList);
         }
     }
 
