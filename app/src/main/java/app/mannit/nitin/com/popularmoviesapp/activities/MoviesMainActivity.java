@@ -1,9 +1,13 @@
 package app.mannit.nitin.com.popularmoviesapp.activities;
 
+import android.database.Cursor;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.AsyncTaskLoader;
+import android.support.v4.content.Loader;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -19,6 +23,7 @@ import java.util.ArrayList;
 
 import app.mannit.nitin.com.popularmoviesapp.R;
 import app.mannit.nitin.com.popularmoviesapp.adapters.MainMovieAdapter;
+import app.mannit.nitin.com.popularmoviesapp.data.MovieContract;
 import app.mannit.nitin.com.popularmoviesapp.models.MovieList;
 import app.mannit.nitin.com.popularmoviesapp.models.Result;
 import app.mannit.nitin.com.popularmoviesapp.util.Constants;
@@ -30,7 +35,9 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class MoviesMainActivity extends PopularMoviesActivity {
+import static app.mannit.nitin.com.popularmoviesapp.activities.DetailsActivity.MOVIE_LOADER_ID;
+
+public class MoviesMainActivity extends PopularMoviesActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 
     private static final String TAG = "MoviesMainActivity";
 
@@ -160,7 +167,6 @@ public class MoviesMainActivity extends PopularMoviesActivity {
         super.onResume();
         if (mListState != null && mList.size() > 0) {
             mLayoutManager.onRestoreInstanceState(mListState);
-            mMovieAdapter.addList(mList);
             recyclerView.setAdapter(mMovieAdapter);
         } else {
             mPath = Constants.POPULAR_PATH;
@@ -191,7 +197,73 @@ public class MoviesMainActivity extends PopularMoviesActivity {
             mPath = Constants.POPULAR_PATH;
             establishConnectionAndMakeCall(mPath, 1);
             return true;
+        } else if (id == R.id.action_favorite) {
+            mPath = null;
+            getSupportLoaderManager().initLoader(MOVIE_LOADER_ID, null, this);
+            return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+        return new AsyncTaskLoader<Cursor>(this) {
+            Cursor movieData = null;
+
+            @Override
+            protected void onStartLoading() {
+                if (movieData != null) {
+                    deliverResult(movieData);
+                } else {
+                    forceLoad();
+                }
+            }
+
+            @Override
+            public Cursor loadInBackground() {
+                try {
+                    return getContentResolver().query(MovieContract.MovieEntry.CONTENT_URI,
+                            null,
+                            null,
+                            null,
+                            MovieContract.MovieEntry._ID);
+
+                } catch (Exception e) {
+                    Log.e(TAG, "Failed to asynchronously load data.");
+                    e.printStackTrace();
+                    return null;
+                }
+            }
+
+            public void deliverResult(Cursor data) {
+                movieData = data;
+                super.deliverResult(data);
+            }
+        };
+    }
+
+    @Override
+    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+        mMovieAdapter.clear();
+        mList.clear();
+        if (data != null) {
+            data.moveToFirst();
+            for (int i = 0; i < data.getCount(); i++) {
+                data.moveToPosition(i);
+                String id = data.getString(data.getColumnIndex(MovieContract.MovieEntry._ID));
+                String title = data.getString(data.getColumnIndex(MovieContract.MovieEntry.COLUMN_MOVIE_NAME));
+                String overview = data.getString(data.getColumnIndex(MovieContract.MovieEntry.COLUMN_MOVIE_OVERVIEW));
+                String poster = data.getString(data.getColumnIndex(MovieContract.MovieEntry.COLUMN_MOVIE_POSTER_PATH));
+                String date = data.getString(data.getColumnIndex(MovieContract.MovieEntry.COLUMN_MOVIE_RELEASE_DATE));
+                double voteAverage = data.getDouble(data.getColumnIndex(MovieContract.MovieEntry.COLUMN_MOVIE_VOTE_AVERAGE));
+                mList.add(new Result(id, poster, title, overview, date, voteAverage));
+            }
+            mMovieAdapter.addList(mList);
+        }
+    }
+
+    @Override
+    public void onLoaderReset(Loader<Cursor> loader) {
+
     }
 }

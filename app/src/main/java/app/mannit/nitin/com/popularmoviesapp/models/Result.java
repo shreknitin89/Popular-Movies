@@ -14,9 +14,6 @@ public class Result {
     @SerializedName("vote_average")
     @Expose
     double voteAverage;
-    @SerializedName("title")
-    @Expose
-    String title;
     @SerializedName("poster_path")
     @Expose
     String posterPath;
@@ -36,16 +33,24 @@ public class Result {
     @Expose
     String key;
 
+    public Result() {
+    }
+
+    public Result(String id, String posterPath, String originalTitle, String overview, String releaseDate, double voteAverage) {
+        this.id = id;
+        this.posterPath = posterPath;
+        this.originalTitle = originalTitle;
+        this.overview = overview;
+        this.releaseDate = releaseDate;
+        this.voteAverage = voteAverage;
+    }
+
     public String getId() {
         return id;
     }
 
     public double getVoteAverage() {
         return voteAverage;
-    }
-
-    public String getTitle() {
-        return title;
     }
 
     public String getPosterPath() {

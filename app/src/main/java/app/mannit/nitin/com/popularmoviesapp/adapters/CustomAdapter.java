@@ -80,7 +80,7 @@ public class CustomAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
     @Override
     public int getItemCount() {
-        return mTrailers.size() + mReviews.size();
+        return mTrailers.size() + mReviews.size() + 1;
     }
 
     @Override

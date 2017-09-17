@@ -197,8 +197,8 @@ public class DetailsActivity extends PopularMoviesActivity implements LoaderMana
                 try {
                     return getContentResolver().query(MovieContract.MovieEntry.CONTENT_URI,
                             null,
-                            null,
-                            null,
+                            MovieContract.MovieEntry._ID + "=?",
+                            new String[]{mMovieData.getId()},
                             MovieContract.MovieEntry._ID);
 
                 } catch (Exception e) {
@@ -249,7 +249,7 @@ public class DetailsActivity extends PopularMoviesActivity implements LoaderMana
                     contentValues.put(MovieContract.MovieEntry._ID, mMovieData.getId());
                     contentValues.put(MovieContract.MovieEntry.COLUMN_MOVIE_NAME, mMovieData.getOriginalTitle());
                     contentValues.put(MovieContract.MovieEntry.COLUMN_MOVIE_OVERVIEW, mMovieData.getOverview());
-                    contentValues.put(MovieContract.MovieEntry.COLUMN_MOVIE_VOTE_AVERAGE, mMovieData.getId());
+                    contentValues.put(MovieContract.MovieEntry.COLUMN_MOVIE_VOTE_AVERAGE, mMovieData.getVoteAverage());
                     contentValues.put(MovieContract.MovieEntry.COLUMN_MOVIE_RELEASE_DATE, mMovieData.getReleaseDate());
                     contentValues.put(MovieContract.MovieEntry.COLUMN_MOVIE_POSTER_PATH, mMovieData.getPosterPath());
 
